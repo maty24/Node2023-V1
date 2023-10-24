@@ -1,21 +1,18 @@
 import {CronJob} from 'cron';
+import {CronServie} from "./cron/cron-service";
+import {CheckSerive} from "../domain/use-cases/checks/check-service";
 
 export class Server {
     public static start() {
         console.log('Server started...')
 
-
-        const job = new CronJob(
+        CronServie.createJob(
             //le digo que ejecuta la funcion cada 3 segundos
-            '*/3 * * * * *',
-            function () {
-                console.log('You will see this message every second');
-            },
-            null,
-            true,
-            //zona horaria que va a tomar la hora
-            'America/Los_Angeles'
+            '*/5 * * * * *',
+            () => {
+           new CheckSerive().execute('http://google.com')
+            }
         );
-        job.start()
+
     }
 }
